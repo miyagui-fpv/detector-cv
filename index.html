@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Detector CV</title>
+<meta name="description" content="Playas protegidas y normativa para el uso de detectores de metales en la Comunitat Valenciana.">
+<meta name="theme-color" content="#0e2a3b">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="vendor/leaflet.css">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand">
+    <svg class="logo" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="12" fill="none" stroke="currentColor" stroke-width="2.4"/><circle cx="16" cy="16" r="6.5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="16" cy="16" r="2.2" fill="var(--red)"/></svg>
+    <div>
+      <h1>Detector CV</h1>
+      <p class="sub">Playas protegidas · Comunitat Valenciana</p>
+    </div>
+  </div>
+  <span id="net" class="net" hidden>Sin conexión</span>
+</header>
+
+<main>
+  <!-- MAPA -->
+  <section id="v-mapa" class="view view-map" data-view="mapa">
+    <div id="map" role="application" aria-label="Mapa de playas protegidas"></div>
+    <div class="map-tools">
+      <button id="btn-layers" class="fab" aria-label="Cambiar mapa base" title="Cambiar mapa base">
+        <svg viewBox="0 0 24 24"><path d="M12 3 2 8l10 5 10-5-10-5Zm-7.6 8.2L2 12.4l10 5 10-5-2.4-1.2L12 15l-7.6-3.8Zm0 4.4L2 16.8l10 5 10-5-2.4-1.2L12 19.4l-7.6-3.8Z"/></svg>
+      </button>
+      <div id="layers" class="layers" hidden>
+        <label><input type="radio" name="base" value="ign" checked> Mapa IGN</label>
+        <label><input type="radio" name="base" value="pnoa"> Ortofoto PNOA</label>
+        <label><input type="radio" name="base" value="osm"> OpenStreetMap</label>
+      </div>
+    </div>
+    <div class="check-wrap">
+      <div id="status" class="status s-idle" aria-live="polite">
+        <div class="status-head">
+          <span class="dot"></span>
+          <strong id="st-title">¿Puedo detectar aquí?</strong>
+        </div>
+        <p id="st-text">Pulsa el botón para comprobar tu posición, o toca cualquier punto del mapa.</p>
+        <p id="st-coords" class="coords" hidden></p>
+      </div>
+      <div class="check-actions">
+        <button id="btn-locate" class="btn-primary">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm9 3h-2.06A7 7 0 0 0 13 5.06V3h-2v2.06A7 7 0 0 0 5.06 11H3v2h2.06A7 7 0 0 0 11 18.94V21h2v-2.06A7 7 0 0 0 18.94 13H21v-2Zm-9 6a5 5 0 1 1 0-10 5 5 0 0 1 0 10Z"/></svg>
+          Comprobar mi posición
+        </button>
+        <button id="btn-follow" class="btn-ghost" aria-pressed="false" title="Seguir mi posición mientras camino">Seguir</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- PLAYAS -->
+  <section id="v-playas" class="view view-scroll" data-view="playas" hidden>
+    <div class="wrap">
+      <h2>Playas protegidas</h2>
+      <p class="lead">En estas zonas <strong>no se puede usar el detector</strong>, ni a menos de 100 m de ellas. Son las que recoge la circular de 2021 de la Dirección General de Cultura y Patrimonio.</p>
+      <div class="filters">
+        <input id="q" type="search" placeholder="Buscar playa o municipio" autocomplete="off" aria-label="Buscar playa o municipio">
+        <div class="chips" role="group" aria-label="Provincia">
+          <button class="chip on" data-prov="">Todas</button>
+          <button class="chip" data-prov="Castellón">Castellón</button>
+          <button class="chip" data-prov="Valencia">Valencia</button>
+          <button class="chip" data-prov="Alicante">Alicante</button>
+        </div>
+      </div>
+      <div id="list"></div>
+      <div class="islands">
+        <h3>Islas protegidas enteras</h3>
+        <p>Además, están protegidas en su totalidad: <span id="islas-txt"></span>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- NORMAS -->
+  <section id="v-normas" class="view view-scroll" data-view="normas" hidden>
+    <div class="wrap prose">
+      <h2>Qué dice la normativa</h2>
+      <p class="lead">Resumen de la circular de la Dirección General de Cultura y Patrimonio sobre permisos de detectores de metales (15 de marzo de 2021), basada en la Ley 4/1998 de Patrimonio Cultural Valenciano (art. 60 bis) y el Decreto 107/2017 (art. 37).</p>
+
+      <div class="rules">
+        <article class="rule r-green">
+          <h3>Playas: sin autorización</h3>
+          <p>Las playas litorales (extensión casi plana de arena o piedras en la orilla del mar) se consideran lugares de pública y masiva concurrencia. Puedes detectar en ellas <strong>sin pedir permiso</strong> a la Conselleria. Costas tampoco exige título habilitante para pasear con un detector.</p>
+        </article>
+        <article class="rule r-red">
+          <h3>Playas protegidas: prohibido</h3>
+          <p>No se puede detectar en las playas incluidas en la Carta Arqueológica ni <strong>a menos de 100 metros</strong> de ellas. En estas zonas la Conselleria no concede autorización.</p>
+        </article>
+        <article class="rule r-amber">
+          <h3>Resto del territorio: con autorización</h3>
+          <p>Fuera de la playa (acantilados, roquedos, urbanizaciones, campo, montaña) necesitas <strong>autorización previa de la Conselleria</strong> y permiso del propietario del terreno. La autorización es personal y tiene ámbito territorial y temporal.</p>
+        </article>
+        <article class="rule r-amber">
+          <h3>Parques y lugares de eventos</h3>
+          <p>Los parques, jardines y lugares donde se celebran eventos con frecuencia también están exentos, salvo que estén en la Carta Arqueológica o a menos de 100 m de ella.</p>
+        </article>
+      </div>
+
+      <h3>Ten en cuenta</h3>
+      <ul>
+        <li>Las <strong>ordenanzas municipales</strong> pueden restringir usos en un tramo de playa. Consulta en el ayuntamiento.</li>
+        <li>El listado de playas protegidas <strong>puede cambiar</strong>. La referencia es la sede electrónica de la Generalitat.</li>
+        <li>Si eres de un organismo exento (defensa, fuerzas de seguridad, suministradoras, minería, equipo arqueológico autorizado) se aplican otras reglas.</li>
+      </ul>
+
+      <div class="docs">
+        <a class="doc" href="docs/circular-detectores-2021.pdf" target="_blank" rel="noopener">
+          <span class="doc-kind">PDF</span>
+          <span><strong>Circular completa</strong><br><small>DG de Cultura y Patrimonio · 15/03/2021</small></span>
+        </a>
+        <a class="doc" href="https://www.tramita.gva.es/csv-front/index.faces?cadena=ZKH29PEL-Y453BEZ3-F8LGL6MM" target="_blank" rel="noopener">
+          <span class="doc-kind">CSV</span>
+          <span><strong>Verificar autenticidad</strong><br><small class="mono">ZKH29PEL-Y453BEZ3-F8LGL6MM</small></span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- HALLAZGOS -->
+  <section id="v-hallazgos" class="view view-scroll" data-view="hallazgos" hidden>
+    <div class="wrap prose">
+      <h2>Si encuentras algo</h2>
+      <p class="lead">No es lo mismo un anillo perdido el verano pasado que una moneda romana. La ley trata cada caso de forma distinta.</p>
+
+      <ol class="steps">
+        <li>
+          <h3>¿Parece antiguo o arqueológico?</h3>
+          <p>Monedas antiguas, cerámica, puntas, hebillas, fíbulas, plomos, restos óseos o cualquier objeto con valor histórico o paleontológico.</p>
+        </li>
+        <li>
+          <h3>No lo limpies ni sigas excavando</h3>
+          <p>Anota el lugar exacto (la app te muestra las coordenadas) y haz fotos del objeto y del entorno.</p>
+        </li>
+        <li>
+          <h3>Entrégalo en 48 horas</h3>
+          <p>Los objetos arqueológicos hallados con detector deben entregarse <strong>en un plazo máximo de 48 horas</strong> (art. 64 de la Ley 4/1998). Contacta con la Conselleria de Cultura, el museo arqueológico más cercano, el ayuntamiento o las fuerzas de seguridad.</p>
+        </li>
+        <li>
+          <h3>No se considera hallazgo casual</h3>
+          <p>Lo encontrado con detector <strong>nunca se considera hallado por azar</strong>, así que no da derecho a premio por hallazgo casual.</p>
+        </li>
+      </ol>
+
+      <div class="callout">
+        <h3>Objetos modernos perdidos</h3>
+        <p>Joyas, relojes o móviles recientes son objetos perdidos. El Código Civil (art. 615) obliga a devolverlos a su dueño o entregarlos en el ayuntamiento (oficina de objetos perdidos).</p>
+      </div>
+
+      <p class="disclaimer"><strong>Aviso.</strong> Esta app es una ayuda orientativa elaborada a partir de documentos públicos de la Generalitat Valenciana. No sustituye a la normativa oficial ni a los mapas originales. La posición GPS del móvil puede tener errores de varios metros. Ante la duda, no detectes.</p>
+    </div>
+  </section>
+</main>
+
+<nav class="tabs" aria-label="Secciones">
+  <button class="tab on" data-go="mapa"><svg viewBox="0 0 24 24"><path d="m15 5-6-2-6 2v16l6-2 6 2 6-2V3l-6 2Zm-1 13.7-4-1.3V5.3l4 1.3v12.1Z"/></svg>Mapa</button>
+  <button class="tab" data-go="playas"><svg viewBox="0 0 24 24"><path d="M4 6h16v2H4V6Zm0 5h16v2H4v-2Zm0 5h10v2H4v-2Z"/></svg>Playas</button>
+  <button class="tab" data-go="normas"><svg viewBox="0 0 24 24"><path d="M6 2h9l5 5v15H6V2Zm8 1.5V8h4.5L14 3.5ZM8 12h8v1.6H8V12Zm0 4h8v1.6H8V16Z"/></svg>Normas</button>
+  <button class="tab" data-go="hallazgos"><svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-4 12.74V18h8v-3.26A7 7 0 0 0 12 2Zm-3 18h6v2H9v-2Z"/></svg>Hallazgos</button>
+</nav>
+
+<!-- Ficha de playa -->
+<div id="sheet" class="sheet" hidden role="dialog" aria-modal="true" aria-labelledby="sh-title">
+  <div class="sheet-card">
+    <button id="sh-close" class="sh-close" aria-label="Cerrar">×</button>
+    <p id="sh-place" class="eyebrow"></p>
+    <h2 id="sh-title"></h2>
+    <p class="pill-red">Prohibido detectar · zona y 100 m alrededor</p>
+    <dl class="facts">
+      <div><dt>En la circular</dt><dd id="sh-circ"></dd></div>
+      <div><dt>Superficie</dt><dd id="sh-area"></dd></div>
+      <div><dt>Distancia</dt><dd id="sh-dist">Activa tu posición para verla</dd></div>
+    </dl>
+    <button id="sh-map" class="btn-primary">Ver en el mapa</button>
+    <h3>Mapa oficial</h3>
+    <div id="sh-imgs" class="imgs"></div>
+  </div>
+</div>
+
+<script src="vendor/leaflet.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
