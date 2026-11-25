@@ -1,0 +1,102 @@
+DETECTOR CV
+Playas protegidas para detectoristas de la Comunitat Valenciana
+================================================================
+
+Enlace de la app:
+https://miyagui-fpv.github.io/detector-cv/
+
+App gratuita para saber dónde se puede usar el detector de metales en las
+playas de la Comunitat Valenciana sin meterse en líos.
+
+
+QUÉ HACE
+--------
+
+1. ¿PUEDO DETECTAR AQUÍ?
+   Pulsa "Comprobar mi posición" y, con el GPS del móvil, la app te dice
+   al momento:
+
+     ROJO     Prohibido. Estás en una playa protegida o a menos de 100 m.
+     NARANJA  Precaución. Estás cerca del límite: aléjate un poco más.
+     VERDE    Fuera de zonas protegidas. En la arena de la playa puedes
+              detectar sin pedir permiso.
+
+   - Botón "Seguir": va comprobando tu posición mientras caminas.
+   - Toca cualquier punto del mapa para comprobarlo y planificar la
+     salida desde casa.
+
+2. MAPA
+   Las 57 zonas protegidas, sacadas de los mapas oficiales de la
+   Generalitat, con su franja de 100 m. También las islas protegidas
+   enteras: Columbretes, Tabarca, Benidorm, l'Olla y Portitxol.
+   Puedes elegir mapa del IGN, ortofoto u OpenStreetMap.
+
+3. PLAYAS
+   Listado por provincia y municipio, con buscador y la distancia desde
+   donde estás. Cada playa tiene su ficha con el mapa oficial.
+
+4. NORMAS
+   Resumen sencillo de la normativa y la circular oficial de 2021 en PDF.
+
+5. HALLAZGOS
+   Qué hacer si encuentras algo:
+   - Un objeto arqueológico se entrega en un máximo de 48 horas.
+   - Lo encontrado con detector nunca cuenta como "hallazgo casual".
+   - Los objetos modernos perdidos se devuelven a su dueño o se entregan
+     en el ayuntamiento.
+
+FUNCIONA SIN COBERTURA
+Ábrela una vez con conexión. Después, la consulta de zonas, la normativa
+y los mapas oficiales que ya hayas visto funcionan sin datos.
+
+
+CÓMO INSTALARLA EN EL MÓVIL
+---------------------------
+No hace falta tienda de aplicaciones: se instala desde el navegador.
+
+ANDROID (Chrome)
+  1. Abre el enlace en Chrome.
+  2. Pulsa el menú de los tres puntos (arriba a la derecha).
+  3. Elige "Instalar aplicación" o "Añadir a pantalla de inicio".
+
+IPHONE (Safari)
+  1. Abre el enlace en Safari (no funciona desde otros navegadores).
+  2. Pulsa el botón Compartir (el cuadrado con la flecha hacia arriba).
+  3. Elige "Añadir a pantalla de inicio".
+
+Aparecerá el icono de Detector CV junto a tus otras apps.
+
+La primera vez que pulses "Comprobar mi posición", ACEPTA EL PERMISO
+DE UBICACIÓN. Si lo denegaste sin querer, actívalo en los ajustes del
+navegador.
+
+
+RESUMEN DE LA NORMATIVA
+-----------------------
+- Playas litorales: puedes detectar SIN AUTORIZACIÓN.
+- Playas protegidas (Carta Arqueológica) y hasta 100 m alrededor:
+  PROHIBIDO.
+- Fuera de la playa (acantilados, roquedos, campo, montaña,
+  urbanizaciones): necesitas AUTORIZACIÓN de la Conselleria de Cultura
+  y permiso del propietario del terreno.
+- Las ordenanzas municipales pueden añadir restricciones.
+
+Fuente: Circular de la Dirección General de Cultura y Patrimonio sobre
+permisos de detectores de metales (15/03/2021), Ley 4/1998 de Patrimonio
+Cultural Valenciano (art. 60 bis) y Decreto 107/2017 (art. 37).
+
+
+AVISO IMPORTANTE
+----------------
+Esta app es una ayuda orientativa hecha a partir de documentos públicos
+de la Generalitat Valenciana. NO ES UNA APP OFICIAL y no sustituye a la
+normativa ni a los mapas originales. El GPS del móvil puede fallar unos
+metros y la normativa puede cambiar.
+
+ANTE LA DUDA, NO DETECTES.
+
+
+¿HAS VISTO UN ERROR?
+--------------------
+Si alguna playa ha cambiado o algo no funciona, avisa para corregirlo:
+https://github.com/miyagui-fpv/detector-cv/issues
