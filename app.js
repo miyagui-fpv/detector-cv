@@ -62,7 +62,54 @@ function utm30(lat, lon) {
 const fmtM = m => m < 1000 ? `${Math.round(m)} m` : `${(m / 1000).toLocaleString('es-ES', { maximumFractionDigits: m < 10000 ? 1 : 0 })} km`;
 
 /* ---------- Evaluación de un punto ---------- */
+/* ---------- Otras comunidades autónomas (orientativo) ---------- */
+const NORMAS_CCAA = {
+  andalucia: { nombre: 'Andalucía', level: 'red', title: 'Prohibido en Andalucía',
+    text: 'En Andalucía el detector está <b>prohibido en todo el territorio, playas incluidas</b>, salvo en actividades arqueológicas autorizadas (Ley 14/2007, art. 60). Las multas pueden ser muy elevadas.' },
+  cantabria: { nombre: 'Cantabria', level: 'red', title: 'Prohibido en Cantabria',
+    text: 'La Ley 11/1998 de Patrimonio Cultural de Cantabria <b>prohíbe el detector</b> fuera de actuaciones arqueológicas autorizadas, también en las playas.' },
+  galicia: { nombre: 'Galicia', level: 'amber', title: 'Galicia: necesitas autorización',
+    text: 'La Ley 5/2016 (art. 101) exige <b>autorización de la Xunta</b> en ámbitos protegidos y para buscar objetos con posible valor cultural. Si no te contestan en tres meses, se entiende denegada.' },
+  asturias: { nombre: 'Asturias', level: 'amber', title: 'Asturias: necesitas autorización',
+    text: 'El uso del detector se considera actividad arqueológica (Ley 1/2001), así que necesitas <b>autorización de la Consejería de Cultura</b>.' },
+  cataluna: { nombre: 'Cataluña', level: 'amber', title: 'Cataluña: necesitas autorización',
+    text: 'Las prospecciones requieren <b>autorización del Departament de Cultura</b> (Llei 9/1993 del patrimoni cultural català).' },
+  baleares: { nombre: 'Illes Balears', level: 'amber', title: 'Baleares: con restricciones',
+    text: 'Está <b>prohibido sobre bienes del patrimonio histórico</b> (Ley 12/1998, art. 25), salvo equipos investigadores con permiso del consell insular.' },
+  murcia: { nombre: 'Región de Murcia', level: 'amber', title: 'Murcia: sin norma propia',
+    text: 'No hay una norma autonómica específica sobre detectores. Rige la ley estatal (Ley 16/1985, art. 42): <b>no puedes buscar restos arqueológicos sin autorización</b> ni detectar en zonas arqueológicas protegidas.' },
+  canarias: { nombre: 'Canarias', level: 'amber', title: 'Canarias: sin norma propia',
+    text: 'No hay una norma autonómica específica sobre detectores. Rige la ley estatal (Ley 16/1985, art. 42): <b>no puedes buscar restos arqueológicos sin autorización</b>. Hay más de 80 zonas arqueológicas protegidas (BIC) en las islas.' },
+  paisvasco: { nombre: 'País Vasco', level: 'amber', title: 'País Vasco: consulta antes',
+    text: 'No hemos encontrado una norma específica sobre detectores en playas. Rige la ley estatal (Ley 16/1985, art. 42): <b>no puedes buscar restos arqueológicos sin autorización</b>.' },
+  ceuta: { nombre: 'Ceuta', level: 'amber', title: 'Ceuta: consulta antes',
+    text: 'Rige la ley estatal (Ley 16/1985, art. 42): <b>no puedes buscar restos arqueológicos sin autorización</b>.' },
+  melilla: { nombre: 'Melilla', level: 'amber', title: 'Melilla: consulta antes',
+    text: 'Rige la ley estatal (Ley 16/1985, art. 42): <b>no puedes buscar restos arqueológicos sin autorización</b>.' }
+};
+const INTERIOR = { level: 'amber', title: 'Fuera de la costa',
+  text: 'Esta app se centra en las playas. Tierra adentro, la mayoría de comunidades exigen <b>autorización de Cultura</b> y permiso del propietario. Consulta la normativa de tu comunidad autónoma.' };
+const NOTA_CCAA = '<br><small>Información orientativa: comprueba la normativa vigente y las ordenanzas municipales antes de detectar.</small>';
+
+let CCAA = null;
+function ccaaAt(lat, lon) {
+  if (!CCAA) return 'cv';
+  for (const c of CCAA) if (contains(c.geometry, lat, lon)) return c.id;
+  let best = null;
+  for (const c of CCAA) { const d = distToGeom(c.geometry, lat, lon); if (!best || d < best.d) best = { id: c.id, d }; }
+  return best && best.d <= 15000 ? best.id : null;
+}
 function evaluate(lat, lon, acc = 0) {
+  const cv = evaluateCV(lat, lon, acc);
+  const id = ccaaAt(lat, lon);
+  if (id === 'cv' || cv.level !== 'green') return cv;
+  if (id === null) return { level: 'amber', title: 'Fuera de España', text: 'Este punto está fuera de las zonas que cubre la app. Consulta la normativa local.' };
+  const n = NORMAS_CCAA[id];
+  if (!n) return { ...INTERIOR, text: INTERIOR.text + NOTA_CCAA };
+  return { level: n.level, title: n.title, text: n.text + NOTA_CCAA };
+}
+
+function evaluateCV(lat, lon, acc = 0) {
   let near = null;
   for (const z of DATA.zonas) {
     const d = distToGeom(z.geometry, lat, lon);
@@ -234,9 +281,17 @@ function go(view) {
   if (location.hash.slice(1) !== view) history.replaceState(null, '', '#' + view);
 }
 
+function renderOtras() {
+  const el = $('#otras-ccaa'); if (!el) return;
+  el.innerHTML = Object.values(NORMAS_CCAA).map(n =>
+    `<article class="rule r-${n.level === 'red' ? 'red' : 'amber'}"><h3>${esc(n.nombre)}</h3><p>${n.text}</p></article>`).join('');
+}
+
 /* ---------- Arranque ---------- */
 async function boot() {
   DATA = await (await fetch('data/zonas.json')).json();
+  fetch('data/ccaa.json').then(r => r.json()).then(d => { CCAA = d; }).catch(() => {});
+  renderOtras();
   $('#islas-txt').textContent = DATA.islas.map(i => i.nombre).join(', ') + ' y la Illa del Portitxol (Xàbia)';
   initMap();
   renderList();
