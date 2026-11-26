@@ -158,3 +158,11 @@ main{flex:1;position:relative;min-height:0}
 .warn-box{background:var(--amber-bg);border-left:4px solid var(--amber);padding:10px 12px;border-radius:6px;font-size:.92rem;margin:0 0 14px}
 .aviso-card p{margin:0 0 10px}
 .aviso-card .btn-primary{width:100%;justify-content:center;margin-top:6px}
+
+/* Plegar el cartel de resultado */
+.status-head{cursor:pointer}
+.st-toggle{margin-left:auto;flex:none;width:32px;height:32px;border:0;border-radius:99px;background:transparent;display:grid;place-items:center;padding:0}
+.st-toggle svg{width:24px;height:24px;fill:var(--ink-2);transition:transform .2s}
+.status.collapsed .st-toggle svg{transform:rotate(180deg)}
+.status.collapsed>:not(.status-head){display:none}
+.status.collapsed{padding:8px 12px}
