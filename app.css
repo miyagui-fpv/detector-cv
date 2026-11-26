@@ -174,3 +174,14 @@ main{flex:1;position:relative;min-height:0}
 .kofi-cup{font-size:2.4rem;line-height:1}
 .kofi-btn{flex:none;width:100%;max-width:360px;text-decoration:none;background:#ff5e5b;color:#fff}
 @media (prefers-color-scheme:dark){.kofi-btn{background:#ff5e5b;color:#fff}}
+
+/* Afiliados Amazon */
+.aff{margin-top:22px}
+.aff h3{margin:0 0 6px}
+.aff>p{margin:0 0 12px;color:var(--ink-2)}
+.aff-list{display:grid;gap:10px}
+.aff-item{display:flex;gap:12px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;color:inherit;text-decoration:none}
+.aff-item small{color:var(--ink-2)}
+.aff-item::after{content:"›";margin-left:auto;font-size:1.4rem;color:var(--ink-2)}
+.aff-ico{flex:none;width:44px;height:44px;border-radius:10px;background:var(--amber-bg);display:grid;place-items:center;font-size:1.4rem}
+.aff-note{margin:10px 0 0;font-size:.8rem;color:var(--ink-2)}
