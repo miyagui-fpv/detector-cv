@@ -166,3 +166,11 @@ main{flex:1;position:relative;min-height:0}
 .status.collapsed .st-toggle svg{transform:rotate(180deg)}
 .status.collapsed>:not(.status-head){display:none}
 .status.collapsed{padding:8px 12px}
+
+/* Apoyar / Ko-fi */
+.kofi-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;display:grid;gap:12px;text-align:center;justify-items:center}
+.kofi-card p{margin:0;max-width:46ch}
+.kofi-card small{color:var(--ink-2);font-size:.82rem}
+.kofi-cup{font-size:2.4rem;line-height:1}
+.kofi-btn{flex:none;width:100%;max-width:360px;text-decoration:none;background:#ff5e5b;color:#fff}
+@media (prefers-color-scheme:dark){.kofi-btn{background:#ff5e5b;color:#fff}}
