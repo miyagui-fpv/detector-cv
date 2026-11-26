@@ -1,7 +1,7 @@
 /* Service worker: la app funciona sin conexión en la playa. */
-const V = 'v1';
+const V = 'v2';
 const SHELL = `shell-${V}`, RUNTIME = 'runtime', TILES = 'tiles';
-const PRECACHE = ['./', 'index.html', 'app.css', 'app.js', 'data/zonas.json', 'manifest.webmanifest',
+const PRECACHE = ['./', 'index.html', 'app.css', 'app.js', 'data/zonas.json', 'data/ccaa.json', 'manifest.webmanifest',
   'vendor/leaflet.js', 'vendor/leaflet.css', 'icons/icon-192.png', 'icons/icon-512.png', 'docs/circular-detectores-2021.pdf'];
 const MAX_TILES = 2500;
 
