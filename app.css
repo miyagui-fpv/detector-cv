@@ -144,3 +144,11 @@ main{flex:1;position:relative;min-height:0}
 .you{width:18px;height:18px;border-radius:50%;background:#1a73e8;border:3px solid #fff;box-shadow:0 0 0 2px rgba(26,115,232,.35)}
 .pin{width:16px;height:16px;border-radius:50%;background:var(--sea);border:3px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.4)}
 .isle{width:16px;height:16px;border-radius:4px;background:var(--red);border:2px solid #fff;transform:rotate(45deg);box-shadow:0 1px 4px rgba(0,0,0,.4)}
+
+/* Botón compartir por WhatsApp */
+.top-actions{display:flex;align-items:center;gap:8px}
+.share-wa{display:inline-flex;align-items:center;gap:6px;background:#25d366;color:#fff;text-decoration:none;
+  font-weight:600;font-size:.85rem;padding:6px 12px;border-radius:99px;white-space:nowrap}
+.share-wa svg{width:18px;height:18px;fill:#fff}
+.share-wa:active{transform:scale(.96)}
+@media (max-width:340px){.share-wa span{display:none}.share-wa{padding:7px}}
