@@ -21,7 +21,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
 <link rel="stylesheet" href="vendor/leaflet.css">
-<link rel="stylesheet" href="app.css?v=4">
+<link rel="stylesheet" href="app.css?v=5">
 </head>
 <body>
 <header class="top">
@@ -181,6 +181,23 @@
       <p class="disclaimer"><strong>Aviso.</strong> Esta app es una ayuda orientativa elaborada a partir de documentos públicos de la Generalitat Valenciana. No sustituye a la normativa oficial ni a los mapas originales. La posición GPS del móvil puede tener errores de varios metros. Ante la duda, no detectes.</p>
     </div>
   </section>
+  <!-- APOYAR -->
+  <section id="v-apoyar" class="view view-scroll" data-view="apoyar" hidden>
+    <div class="wrap prose">
+      <h2>Apoya el proyecto</h2>
+      <p class="lead">Detector CV es gratuita y la mantengo en mi tiempo libre: revisar normativa, actualizar mapas y, si sale bien, ampliarla a otras comunidades con costa.</p>
+      <div class="kofi-card">
+        <div class="kofi-cup" aria-hidden="true">☕</div>
+        <p>Si te ha sido útil en la playa, puedes invitarme a un café. Cualquier aportación ayuda a mantenerla al día.</p>
+        <a class="btn-primary kofi-btn" href="https://ko-fi.com/visento" target="_blank" rel="noopener" data-goatcounter-click="ko-fi" data-goatcounter-title="Botón Ko-fi">Invítame a un café en Ko-fi</a>
+        <small>Pago seguro con PayPal o tarjeta. No hace falta registrarse.</small>
+      </div>
+      <div class="callout">
+        <h3>Otras formas de ayudar</h3>
+        <p>Compártela con otros detectoristas por WhatsApp o en tus grupos, y si sabes de alguna playa prohibida que no aparezca, avísame.</p>
+      </div>
+    </div>
+  </section>
 </main>
 
 <nav class="tabs" aria-label="Secciones">
@@ -188,6 +205,7 @@
   <button class="tab" data-go="playas"><svg viewBox="0 0 24 24"><path d="M4 6h16v2H4V6Zm0 5h16v2H4v-2Zm0 5h10v2H4v-2Z"/></svg>Playas</button>
   <button class="tab" data-go="normas"><svg viewBox="0 0 24 24"><path d="M6 2h9l5 5v15H6V2Zm8 1.5V8h4.5L14 3.5ZM8 12h8v1.6H8V12Zm0 4h8v1.6H8V16Z"/></svg>Normas</button>
   <button class="tab" data-go="hallazgos"><svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-4 12.74V18h8v-3.26A7 7 0 0 0 12 2Zm-3 18h6v2H9v-2Z"/></svg>Hallazgos</button>
+  <button class="tab" data-go="apoyar"><svg viewBox="0 0 24 24"><path d="M3 7h14v6a6 6 0 0 1-6 6H9a6 6 0 0 1-6-6V7Zm14 1h1.5a3.5 3.5 0 0 1 0 7H17v-2h1.5a1.5 1.5 0 0 0 0-3H17V8ZM3 20h14v2H3v-2ZM8 2h1.6v3.5H8V2Zm3.2 0h1.6v3.5h-1.6V2Z"/></svg>Apoyar</button>
 </nav>
 
 <!-- Ficha de playa -->
