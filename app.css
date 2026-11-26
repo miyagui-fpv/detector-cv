@@ -152,3 +152,9 @@ main{flex:1;position:relative;min-height:0}
 .share-wa svg{width:18px;height:18px;fill:#fff}
 .share-wa:active{transform:scale(.96)}
 @media (max-width:340px){.share-wa span{display:none}.share-wa{padding:7px}}
+
+/* Avisos de uso orientativo */
+.st-note{font-size:.78rem;color:var(--ink-2);margin:6px 0 0;line-height:1.35}
+.warn-box{background:var(--amber-bg);border-left:4px solid var(--amber);padding:10px 12px;border-radius:6px;font-size:.92rem;margin:0 0 14px}
+.aviso-card p{margin:0 0 10px}
+.aviso-card .btn-primary{width:100%;justify-content:center;margin-top:6px}
