@@ -89,7 +89,7 @@ const NORMAS_CCAA = {
 };
 const INTERIOR = { level: 'amber', title: 'Fuera de la costa',
   text: 'Esta app se centra en las playas. Tierra adentro, la mayoría de comunidades exigen <b>autorización de Cultura</b> y permiso del propietario. Consulta la normativa de tu comunidad autónoma.' };
-const NOTA_CCAA = '<br><small>Información orientativa: comprueba la normativa vigente y las ordenanzas municipales antes de detectar.</small>';
+const NOTA_CCAA = '';
 
 let CCAA = null;
 function ccaaAt(lat, lon) {
