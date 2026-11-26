@@ -78,8 +78,8 @@ function evaluate(lat, lon, acc = 0) {
   if (d <= BUFFER_M) return { level: 'red', zone: z, title: 'Prohibido detectar', text: `Estás a ${fmtM(d)} de <b>${where}</b>, dentro de la franja de ${BUFFER_M} m.` };
   if (d - acc <= BUFFER_M) return { level: 'amber', zone: z, title: 'Demasiado cerca', text: `Estás a unos ${fmtM(d)} de <b>${where}</b>, pero el GPS tiene un margen de ±${fmtM(acc)}. Aléjate un poco más.` };
   if (d <= NEAR_M) return { level: 'amber', zone: z, title: 'Cerca de zona protegida', text: `A ${fmtM(d)} de <b>${where}</b>. Mantente a más de ${BUFFER_M} m de la zona roja.` };
-  return { level: 'green', zone: z, title: 'Fuera de zonas protegidas',
-    text: `Si estás en la arena de la playa puedes detectar <b>sin autorización</b>. Fuera de la playa necesitas permiso de la Conselleria. Zona protegida más cercana: ${where}, a ${fmtM(d)}.` };
+  return { level: 'green', zone: z, title: 'Fuera de las zonas de la Generalitat',
+    text: `Este punto no está en el listado de la Generalitat (2021). En la arena de la playa no necesitas autorización de la Conselleria, pero <b>el ayuntamiento puede haberlo prohibido</b>: mira los carteles y la ordenanza municipal. Fuera de la playa necesitas permiso de la Conselleria. Zona protegida más cercana: ${where}, a ${fmtM(d)}.` };
 }
 
 function showStatus(res, lat, lon, acc, label) {
