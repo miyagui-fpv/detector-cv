@@ -296,7 +296,12 @@ async function boot() {
   initMap();
   renderList();
 
-  $$('.tab').forEach(t => t.addEventListener('click', () => go(t.dataset.go)));
+  $$('.tab').forEach(t => t.addEventListener('click', () => {
+    go(t.dataset.go);
+    // GoatCounter: cuenta cada vez que alguien abre una pestaña (Apoyar, Playas, Normas...)
+    if (window.goatcounter && window.goatcounter.count)
+      window.goatcounter.count({ path: 'pestana-' + t.dataset.go, title: 'Pestaña ' + t.textContent.trim(), event: true });
+  }));
   window.addEventListener('hashchange', () => go(location.hash.slice(1)));
   go(location.hash.slice(1) || 'mapa');
 
