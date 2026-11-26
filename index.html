@@ -21,7 +21,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
 <link rel="stylesheet" href="vendor/leaflet.css">
-<link rel="stylesheet" href="app.css?v=2">
+<link rel="stylesheet" href="app.css?v=3">
 </head>
 <body>
 <header class="top">
@@ -62,6 +62,7 @@
           <strong id="st-title">¿Puedo detectar aquí?</strong>
         </div>
         <p id="st-text">Pulsa el botón para comprobar tu posición, o toca cualquier punto del mapa.</p>
+        <p class="st-note">Orientativo: puede haber playas prohibidas por ayuntamientos u otras normas que no aparecen aquí.</p>
         <p id="st-coords" class="coords" hidden></p>
       </div>
       <div class="check-actions">
@@ -79,6 +80,7 @@
     <div class="wrap">
       <h2>Playas protegidas</h2>
       <p class="lead">En estas zonas <strong>no se puede usar el detector</strong>, ni a menos de 100 m de ellas. Son las que recoge la circular de 2021 de la Dirección General de Cultura y Patrimonio.</p>
+      <p class="warn-box"><strong>Ojo:</strong> este listado es de 2021. Desde entonces algunos ayuntamientos han podido prohibir el detector en otras playas mediante ordenanzas o bandos. Que una playa no esté aquí <strong>no garantiza</strong> que esté permitido. Consulta los carteles y el ayuntamiento.</p>
       <div class="filters">
         <input id="q" type="search" placeholder="Buscar playa o municipio" autocomplete="off" aria-label="Buscar playa o municipio">
         <div class="chips" role="group" aria-label="Provincia">
@@ -123,7 +125,7 @@
 
       <h3>Ten en cuenta</h3>
       <ul>
-        <li>Las <strong>ordenanzas municipales</strong> pueden restringir usos en un tramo de playa. Consulta en el ayuntamiento.</li>
+        <li>Las <strong>ordenanzas municipales</strong> pueden prohibir el detector en playas que no salen en este listado, y hay prohibiciones posteriores a 2021 que la app no recoge. Consulta en el ayuntamiento y respeta los carteles.</li>
         <li>El listado de playas protegidas <strong>puede cambiar</strong>. La referencia es la sede electrónica de la Generalitat.</li>
         <li>Si eres de un organismo exento (defensa, fuerzas de seguridad, suministradoras, minería, equipo arqueológico autorizado) se aplican otras reglas.</li>
       </ul>
@@ -201,8 +203,26 @@
   </div>
 </div>
 
+<!-- Aviso de primera visita -->
+<div id="aviso" class="sheet" hidden role="dialog" aria-modal="true" aria-labelledby="av-title">
+  <div class="sheet-card aviso-card">
+    <p class="eyebrow">Antes de empezar</p>
+    <h2 id="av-title">Uso orientativo</h2>
+    <p>Esta app muestra las playas protegidas del <strong>listado oficial de la Generalitat (2021)</strong>.</p>
+    <p>Desde entonces, <strong>ayuntamientos y otras administraciones pueden haber prohibido</strong> el detector en playas que aquí no aparecen. Que una playa no salga en rojo no garantiza que esté permitido.</p>
+    <p>Respeta siempre los carteles y, ante la duda, pregunta en el ayuntamiento.</p>
+    <button id="av-ok" class="btn-primary">Entendido</button>
+  </div>
+</div>
+<script>
+(function(){var K='aviso-orientativo-v1',seen=false;
+try{seen=localStorage.getItem(K)==='1'}catch(e){}
+var a=document.getElementById('aviso');if(!seen)a.hidden=false;
+document.getElementById('av-ok').addEventListener('click',function(){a.hidden=true;try{localStorage.setItem(K,'1')}catch(e){}});})();
+</script>
+
 <script src="vendor/leaflet.js"></script>
-<script src="app.js"></script>
+<script src="app.js?v=2"></script>
 <script data-goatcounter="https://detector-cv.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>
 </body>
