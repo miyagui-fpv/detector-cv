@@ -21,7 +21,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
 <link rel="stylesheet" href="vendor/leaflet.css">
-<link rel="stylesheet" href="app.css?v=3">
+<link rel="stylesheet" href="app.css?v=4">
 </head>
 <body>
 <header class="top">
@@ -57,9 +57,10 @@
     </div>
     <div class="check-wrap">
       <div id="status" class="status s-idle" aria-live="polite">
-        <div class="status-head">
+        <div class="status-head" id="st-head">
           <span class="dot"></span>
           <strong id="st-title">¿Puedo detectar aquí?</strong>
+          <button id="st-toggle" class="st-toggle" type="button" aria-label="Plegar" title="Plegar / desplegar"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.4 8.6 12 13.2l4.6-4.6L18 10l-6 6-6-6 1.4-1.4Z"/></svg></button>
         </div>
         <p id="st-text">Pulsa el botón para comprobar tu posición, o toca cualquier punto del mapa.</p>
         <p class="st-note">Orientativo: puede haber playas prohibidas por ayuntamientos u otras normas que no aparecen aquí.</p>
@@ -225,6 +226,11 @@ var a=document.getElementById('aviso');if(!seen)a.hidden=false;
 document.getElementById('av-ok').addEventListener('click',function(){a.hidden=true;try{localStorage.setItem(K,'1')}catch(e){}});})();
 </script>
 
+<script>
+(function(){var st=document.getElementById('status'),b=document.getElementById('st-toggle');
+function t(e){if(e)e.stopPropagation();st.classList.toggle('collapsed');b.setAttribute('aria-label',st.classList.contains('collapsed')?'Desplegar':'Plegar');}
+b.addEventListener('click',t);document.getElementById('st-head').addEventListener('click',t);})();
+</script>
 <script src="vendor/leaflet.js"></script>
 <script src="app.js?v=4"></script>
 <script data-goatcounter="https://detector-cv.goatcounter.com/count"
