@@ -21,7 +21,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
 <link rel="stylesheet" href="vendor/leaflet.css">
-<link rel="stylesheet" href="app.css?v=6">
+<link rel="stylesheet" href="app.css?v=7">
 </head>
 <body>
 <header class="top">
@@ -53,6 +53,11 @@
         <label><input type="radio" name="base" value="ign" checked> Mapa IGN</label>
         <label><input type="radio" name="base" value="pnoa"> Ortofoto PNOA</label>
         <label><input type="radio" name="base" value="osm"> OpenStreetMap</label>
+        <hr class="layers-sep">
+        <strong class="layers-h">Patrimonio protegido</strong>
+        <label><input type="checkbox" id="ov-bic"> Bienes de Interés Cultural (BIC) y entornos</label>
+        <p class="layers-note">Datos oficiales de Andalucía, C. Valenciana, País Vasco, Asturias y Castilla y León. Necesita conexión. En el resto de comunidades todavía no hay datos.</p>
+        <p class="layers-note" id="ov-bic-zoom" hidden>Acerca el mapa para ver los BIC.</p>
       </div>
     </div>
     <div class="check-wrap">
@@ -277,7 +282,7 @@ function t(e){if(e)e.stopPropagation();st.classList.toggle('collapsed');b.setAtt
 b.addEventListener('click',t);document.getElementById('st-head').addEventListener('click',t);})();
 </script>
 <script src="vendor/leaflet.js"></script>
-<script src="app.js?v=5"></script>
+<script src="app.js?v=6"></script>
 <script data-goatcounter="https://detector-cv.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>
 </body>
