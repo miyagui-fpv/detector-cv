@@ -157,6 +157,45 @@ function setBase(key) {
   try { localStorage.setItem('base', key); } catch (e) {}
 }
 
+/* ---------- Capas oficiales de patrimonio (BIC) ---------- */
+const ArcExport = L.TileLayer.extend({
+  getTileUrl(c) {
+    const b = this._tileCoordsToBounds(c), crs = this._map.options.crs;
+    const nw = crs.project(b.getNorthWest()), se = crs.project(b.getSouthEast());
+    return `${this._url}?bbox=${nw.x},${se.y},${se.x},${nw.y}&bboxSR=3857&imageSR=3857&size=256,256&layers=${this.options.layers}&format=png32&transparent=true&f=image`;
+  }
+});
+const OV_OPTS = { format: 'image/png', transparent: true, version: '1.1.1', minZoom: 11, maxZoom: 20, opacity: .8, zIndex: 5 };
+const BIC_SOURCES = [
+  { nombre: 'Andalucía', bounds: [[35.9, -7.6], [38.8, -1.6]], attr: 'BIC © <a href="https://www.juntadeandalucia.es/institutodeestadisticaycartografia/dega/datos-espaciales-de-referencia-de-andalucia-dera" target="_blank" rel="noopener">Junta de Andalucía (DERA)</a>',
+    make: o => L.tileLayer.wms('https://www.ideandalucia.es/services/DERA_g11_patrimonio/wms', { ...o, layers: 'g11_19_EntornosProteccionBIC,g11_18_BienesProtegidos_pol' }) },
+  { nombre: 'C. Valenciana', bounds: [[37.8, -1.6], [40.85, 0.75]], attr: 'BIC © <a href="https://cultura.gva.es/es/web/patrimonio-cultural-y-museos/inventario-general" target="_blank" rel="noopener">GVA (IGPCV)</a>',
+    make: o => L.tileLayer.wms('https://terramapas.icv.gva.es/22_IGPCV', { ...o, layers: 'BIC.Entornos,BIC.Delimitaciones' }) },
+  { nombre: 'País Vasco', bounds: [[42.4, -3.5], [43.5, -1.7]], attr: 'Patrimonio © <a href="https://www.geo.euskadi.eus" target="_blank" rel="noopener">geoEuskadi</a>',
+    make: o => L.tileLayer.wms('https://www.geo.euskadi.eus/WMS_KULTURA', { ...o, layers: 'Ondasun_arkitekturaen_mugaketak_Delimitaciones_de_los_bienes_arquitectonicos,Ondasun_arkeologikoen_mugaketak_Delimitaciones_de_los_bienes_arqueologicos' }) },
+  { nombre: 'Asturias', bounds: [[42.85, -7.2], [43.7, -4.5]], attr: 'BIC © <a href="https://sig.asturias.es" target="_blank" rel="noopener">SITPA – Principado de Asturias</a>',
+    make: o => new ArcExport('https://sig.asturias.es/servicios/rest/services/Visor/Cultura/MapServer/export', { ...o, layers: 'show:2,3' }) },
+  { nombre: 'Castilla y León', bounds: [[40.0, -7.1], [43.3, -1.7]], attr: 'BIC © <a href="https://idecyl.jcyl.es" target="_blank" rel="noopener">IDECyL – Junta de CyL</a>',
+    make: o => L.tileLayer.wms('https://idecyl.jcyl.es/geoserver/wms', { ...o, layers: 'patrimoniocultural:pacu_cyl_bic_prot_vw,patrimoniocultural:pacu_cyl_bic_inmu_vw' }) },
+];
+let bicGroup;
+function setBic(on) {
+  if (!bicGroup) bicGroup = L.layerGroup(BIC_SOURCES.map(s => s.make({ ...OV_OPTS, bounds: L.latLngBounds(s.bounds), attribution: s.attr })));
+  if (on) bicGroup.addTo(map); else map.removeLayer(bicGroup);
+  const hint = $('#ov-bic-zoom'); if (hint) hint.hidden = !on || map.getZoom() >= 11;
+  try { localStorage.setItem('ov-bic', on ? '1' : '0'); } catch (e) {}
+}
+function initOverlays() {
+  const cb = $('#ov-bic'); if (!cb) return;
+  let on = false; try { on = localStorage.getItem('ov-bic') === '1'; } catch (e) {}
+  cb.checked = on; if (on) setBic(true);
+  cb.addEventListener('change', () => {
+    setBic(cb.checked);
+    if (cb.checked && window.goatcounter && goatcounter.count) goatcounter.count({ path: 'capa-bic', title: 'Activa capa BIC', event: true });
+  });
+  map.on('zoomend', () => { const h = $('#ov-bic-zoom'); if (h) h.hidden = !cb.checked || map.getZoom() >= 11; });
+}
+
 function initMap() {
   map = L.map('map', { zoomControl: false, attributionControl: false }).setView([39.35, -0.25], 8);
   L.control.zoom({ position: 'topleft' }).addTo(map);
@@ -164,6 +203,7 @@ function initMap() {
   let saved = 'ign'; try { saved = localStorage.getItem('base') || 'ign'; } catch (e) {}
   $(`input[name=base][value=${saved}]`).checked = true;
   setBase(saved);
+  initOverlays();
 
   const buffers = { type: 'FeatureCollection', features: DATA.zonas.map(z => ({ type: 'Feature', properties: z.properties, geometry: z.buffer })) };
   L.geoJSON(buffers, { interactive: false, style: { color: '#d33a2c', weight: 1.5, dashArray: '5 5', fill: true, fillOpacity: .07, fillColor: '#d33a2c' } }).addTo(map);
