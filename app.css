@@ -185,3 +185,8 @@ main{flex:1;position:relative;min-height:0}
 .aff-item::after{content:"›";margin-left:auto;font-size:1.4rem;color:var(--ink-2)}
 .aff-ico{flex:none;width:44px;height:44px;border-radius:10px;background:var(--amber-bg);display:grid;place-items:center;font-size:1.4rem}
 .aff-note{margin:10px 0 0;font-size:.8rem;color:var(--ink-2)}
+
+.layers-sep{border:0;border-top:1px solid var(--line);margin:4px 0;width:100%}
+.layers-h{font-family:var(--f-display);font-size:.85rem;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-2)}
+.layers-note{margin:0;font-size:.78rem;color:var(--ink-2);max-width:240px;line-height:1.3}
+.layers{max-width:280px}
